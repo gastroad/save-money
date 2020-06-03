@@ -1,0 +1,5 @@
+rootProject.name = 'save-money-back'
+
+include ':save-money-core'
+include ':save-money-steam'
+include ':save-money-web'
