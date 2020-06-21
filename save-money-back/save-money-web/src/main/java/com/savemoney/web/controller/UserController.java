@@ -47,7 +47,7 @@ public class UserController {
         // 회원 중복 확인
         if (userService.duplicate(userEntity.getId())) {
             response.put("success", false);
-            response.put("message", "이미 회원입니다");
+            response.put("message", "아이디가 존재합니다.");
             return ResponseEntity.badRequest().body(response);
         }
 
