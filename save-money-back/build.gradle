@@ -12,8 +12,6 @@ buildscript {
 }
 
 allprojects {
-    group 'com.savemoney'
-    version '0.1.0-SNAPSHOT'
 }
 
 subprojects {
