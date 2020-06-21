@@ -1,8 +1,9 @@
 package com.savemoney.web.config.security.service;
 
-import com.savemoney.web.config.security.mapper.UserMapper;
+import com.savemoney.web.config.security.domain.CertificationEntity;
+import com.savemoney.web.config.security.mapper.CertificationAuthorityMapper;
+import com.savemoney.web.config.security.mapper.CertificationMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,20 +14,26 @@ import org.springframework.stereotype.Service;
 public class CustomUserDetailsService implements UserDetailsService {
 
     /**
-     * User Mapper
+     * Certification Mapper
      */
-    private final UserMapper userMapper;
+    private final CertificationMapper certificationMapper;
 
-    /*
-     * TODO: InMemory 방식 인증 -> Database 연동 방식 인증으로 변경
+    /**
+     * Certification Authority Mapper
+     */
+    private final CertificationAuthorityMapper certificationAuthorityMapper;
+
+    /**
+     * 회원 조회
+     * @param username  회원 구별 정보(아이디)
+     * @return          회원 조획 결과
+     * @throws UsernameNotFoundException
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
-                .build();
+        CertificationEntity certificationEntity = certificationMapper.findById(username);
+        certificationEntity.setRoles(certificationAuthorityMapper.findAuthorityById(username));
+        return certificationEntity;
     }
 
 }

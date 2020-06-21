@@ -1,5 +1,6 @@
 package com.savemoney.web.config.security;
 
+import com.savemoney.web.config.security.service.CustomPasswordEncoder;
 import com.savemoney.web.config.security.service.JwtAuthenticationFilter;
 import com.savemoney.web.config.security.service.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
@@ -31,23 +32,27 @@ public class WebSecurityConfigure extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/**").permitAll()
-                .antMatchers(HttpMethod.POST, "/**").permitAll()
-                .anyRequest().permitAll()
+                    .authorizeRequests()
+                        .antMatchers(HttpMethod.GET, "/api/").permitAll()
+                        .antMatchers(HttpMethod.GET, "/api/token/").permitAll()
+                        .antMatchers(HttpMethod.POST, "/api/user/").permitAll()
+                        .anyRequest().hasAnyRole("USER")
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                    .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
-    // 제외 항목
+    /**
+     * 제외 항목
+     * @param web
+     */
     @Override
-    public void configure(  WebSecurity web) {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers();
     }
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+        return new CustomPasswordEncoder();
     }
 
 }

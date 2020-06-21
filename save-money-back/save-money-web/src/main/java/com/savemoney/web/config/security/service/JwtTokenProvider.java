@@ -1,5 +1,6 @@
 package com.savemoney.web.config.security.service;
 
+import com.savemoney.web.config.security.domain.CertificationEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -8,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +31,7 @@ public class JwtTokenProvider {
     /**
      * UserDetailsService
      */
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
     /**
      * 토큰 유효시간
@@ -65,13 +65,13 @@ public class JwtTokenProvider {
     }
 
     /**
-     * 인증정보 조회
+     * 인증
      * @param token 토큰
-     * @return
+     * @return      인증 결과
      */
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+        CertificationEntity certificationEntity = (CertificationEntity) userDetailsService.loadUserByUsername(this.getUserPk(token));
+        return new UsernamePasswordAuthenticationToken(certificationEntity, "", certificationEntity.getAuthorities());
     }
 
     /**
