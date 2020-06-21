@@ -1,35 +1,67 @@
 package com.savemoney.web.controller;
 
-import com.savemoney.core.domain.UserAuthority;
 import com.savemoney.core.domain.UserEntity;
 import com.savemoney.core.service.UserService;
-import com.savemoney.web.config.security.service.JWTTokenProvider;
+import com.savemoney.core.util.validation.ValidationProvider;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/user")
 public class UserController {
 
+    /**
+     * User Service
+     */
     private final UserService userService;
-    private final JWTTokenProvider jwtTokenProvider;
 
-    public String getAccessToken(@RequestParam("id") String id,
-                                 @RequestParam("password") String password) {
-        UserEntity userEntity = userService.getUserById(id);
-        List<UserAuthority> userAuthorities = null;
-        // System.out.println("Password Encode: " + passwordEncoder.encode(password));
-        //if (!passwordEncoder.matches(password, userEntity.getPassword())) {
-        if (!password.equals(userEntity.getPassword())) {
-            return "Fail...";
-        } else {
-            userService.getUserAuthoritiesById(id);
+    /**
+     * Validation Component
+     */
+    private final ValidationProvider validationProvider;
+
+    /**
+     * 회원 가입
+     * @param userEntity
+     */
+    @RequestMapping(value = "/", method = RequestMethod.POST)
+    public ResponseEntity join(@Valid  UserEntity userEntity, Errors errors) {
+        Map<String, Object> response = new HashMap<>();
+
+        // 유효성 체크
+        if (errors.hasErrors()) {
+            return validationProvider.valid(errors);
         }
-        return jwtTokenProvider.createToken(userEntity.getId(), userAuthorities  );
 
+        // 회원 중복 확인
+        if (userService.duplicate(userEntity.getId())) {
+            response.put("success", false);
+            response.put("message", "아이디가 존재합니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // 회원 가입
+        try {
+            response.put("success", true);
+            response.put("data", userService.join(userEntity));
+        } catch (NoSuchAlgorithmException e) {
+            response.put("success", false);
+            response.put("message", "암호화 에러 발생");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+        return ResponseEntity.ok().body(response);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.savemoney.web.config.security.service;
 
-import com.savemoney.core.service.UserService;
+import com.savemoney.web.config.security.domain.CertificationEntity;
+import com.savemoney.web.config.security.mapper.CertificationAuthorityMapper;
+import com.savemoney.web.config.security.mapper.CertificationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,11 +13,27 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    /**
+     * Certification Mapper
+     */
+    private final CertificationMapper certificationMapper;
 
+    /**
+     * Certification Authority Mapper
+     */
+    private final CertificationAuthorityMapper certificationAuthorityMapper;
+
+    /**
+     * 회원 조회
+     * @param username  회원 구별 정보(아이디)
+     * @return          회원 조획 결과
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) userService.findById(String.valueOf(username));
+        CertificationEntity certificationEntity = certificationMapper.findById(username);
+        certificationEntity.setRoles(certificationAuthorityMapper.findAuthorityById(username));
+        return certificationEntity;
     }
 
 }
