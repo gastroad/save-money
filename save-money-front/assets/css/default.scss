@@ -1,0 +1,177 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap");
+html,
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+dl,
+dt,
+dd,
+span,
+form,
+fieldset,
+input,
+select,
+label,
+textarea,
+table,
+caption,
+thead,
+tfoot,
+tbody,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  font: 14px/1.5 "Nunito Sans", sans-serif;
+  color: #000;
+  letter-spacing: -0.5px;
+}
+b,
+span,
+strong,
+input,
+a,
+button {
+  font-size: inherit;
+  font-family: inherit;
+  color: inherit;
+}
+article,
+aside,
+dialog,
+footer,
+header,
+section,
+footer,
+nav,
+figure,
+hgroup,
+details,
+summary,
+figure,
+figcaption {
+  display: block;
+}
+cite {
+  display: inline;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0px;
+}
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+img {
+  border: 0;
+  max-width: 100%;
+}
+label,
+input,
+textarea,
+select {
+  vertical-align: middle;
+}
+ol,
+ul {
+  list-style: none;
+}
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+fieldset {
+  border: none;
+}
+.skip,
+hr,
+legend {
+  position: absolute;
+  left: -1000%;
+  width: 1px;
+  height: 1px;
+  font-size: 0;
+  line-height: 0;
+  overflow: hidden;
+}
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+}
+
+#header {
+  height: 68px;
+  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
+}
+nav {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 260px;
+  height: 100%;
+  background-color: #313a46;
+  h1 {
+    height: 68px;
+    line-height: 68px;
+    font-size: 30px;
+    font-weight: 500;
+    text-align: left;
+    color: white;
+    letter-spacing: -5px;
+    text-align: center;
+  }
+  ul {
+    li {
+      a {
+        height: 40px;
+        line-height: 40px;
+        padding: 0px 20px;
+        font-size: .89rem;
+        letter-spacing: -1px;
+        font-weight: 700;
+        color: #8391a2;
+        &.on {
+          color: #fff;
+        }
+      }
+      border-bottom: 1px solid #35393e;
+    }
+  }
+}
+section {
+  padding-left: 290px;
+  padding-bottom: 50px;
+  background-color: #eef2f7;
+  height: 100%;
+}
+h2 {
+  font-size: 18px;
+  margin: 0;
+  line-height: 75px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: inherit;
+  font-weight: 700;
+}
