@@ -65,6 +65,13 @@ public class TokenController {
 
         // 회원 정보 확인
         CertificationEntity certificationEntity = certificationMapper.findById(accessEntity.getId());
+        if (certificationEntity == null) {
+            response.put("success", false);
+            response.put("message", "회원정보가 존재하지 않습니다");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // 패스워드 일치 여부 확인
         if (!passwordEncoder.matches(accessEntity.getPassword(), certificationEntity.getPassword())) {
             response.put("success", false);
             response.put("message", "패스워드가 맞지 않습니다");
