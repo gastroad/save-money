@@ -1,13 +1,12 @@
-import React from "react"
-
+import React from "react";
 
 const GameList = () => {
-    return (
-        <section>
-            GameList
-        </section>
-    )
+  return (
+    <section>
+      <h2>GameList</h2>
+      <article>게임 목록 페이지</article>
+    </section>
+  );
+};
 
-}
-
-export default GameList
+export default GameList;
