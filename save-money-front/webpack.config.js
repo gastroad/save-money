@@ -46,6 +46,13 @@ module.exports = {
         disableHostCheck: true,
         historyApiFallback: true,
         https: true,
+        proxy: {
+            "/api": {
+              target: "https://savemoney.selectjun.com",
+              changeOrigin: true,
+              secure: false
+            }
+          }
     },
     plugins: [
         new CaseSensitivePathsPlugin(),

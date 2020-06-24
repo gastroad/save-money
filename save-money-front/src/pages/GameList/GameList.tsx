@@ -1,6 +1,6 @@
 import React from "react";
 
-const GameList = () => {
+const GameList: React.FC = () => {
   return (
     <section>
       <h2>GameList</h2>

@@ -2,9 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import cx from "classnames";
 
-import { RouteComponentProps, withRouter } from "react-router";
+import { useLocation } from "react-router";
 
-const Header = (props) => {
+const Header: React.FunctionComponent = () => {
+  const location = useLocation();
+
   return (
     <header>
       <div id="header"></div>
@@ -15,7 +17,7 @@ const Header = (props) => {
             <Link
               to="/dashboard"
               className={cx({
-                on: props.location.pathname.includes("/dashboard"),
+                on: location.pathname.includes("/dashboard"),
               })}
             >
               DashBaord
@@ -25,7 +27,7 @@ const Header = (props) => {
             <Link
               to="/gamelist"
               className={cx({
-                on: props.location.pathname.includes("/gamelist"),
+                on: location.pathname.includes("/gamelist"),
               })}
             >
               GameList
@@ -35,7 +37,7 @@ const Header = (props) => {
             <Link
               to="/setting"
               className={cx({
-                on: props.location.pathname.includes("/setting"),
+                on: location.pathname.includes("/setting"),
               })}
             >
               Setting
@@ -47,4 +49,4 @@ const Header = (props) => {
   );
 };
 
-export default withRouter(Header);
+export default Header;
