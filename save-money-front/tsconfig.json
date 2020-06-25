@@ -18,7 +18,7 @@
       "@utils/*": [
         "./src/utils/*"
       ]
-    }
+    },
+    "strict": true
   },
-  "strict": true
 }

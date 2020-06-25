@@ -1,6 +1,6 @@
 import React from "react";
 
-const Setting = () => {
+const Setting: React.FC = () => {
   return (
     <section>
       <h2>Setting</h2>

@@ -12,21 +12,23 @@ import GameList from "./pages/GameList";
 import Setting from "./pages/Setting";
 
 const App = () => {
-  const renderRoute = (Component) => {
-    return (props) => {
+
+  const renderRoute = (Component: React.FC) => {
+    return (props: any) => {
       const newProps = {
         ...props,
       };
       return <Component {...newProps} />;
     };
   };
+  
   return (
     <Router>
       <Header />
       <>
         <div id={"root-modal"} />
         <Switch>
-          <Route path="/dashboard" component={renderRoute(DashBoard)} />
+          <Route path="/dashboard" component={DashBoard} />
           <Route path="/gamelist" component={renderRoute(GameList)} />
           <Route path="/setting" component={renderRoute(Setting)} />
           <Redirect to="/dashboard" />;
