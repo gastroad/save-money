@@ -46,3 +46,9 @@ project(':save-money-web') {
         compile project(':save-money-steam')
     }
 }
+
+project(':save-money-steam') {
+    dependencies {
+        compile project(':save-money-core')
+    }
+}
