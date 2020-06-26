@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.savemoney.core.mapper.SteamUserMapper">
+
+    <insert id="save" parameterType="com.savemoney.core.domain.SteamUserEntity">
+        INSERT INTO STEAM_USER (
+            ID
+            , VANITY_URL
+            , STEAM_ID
+            , CREATE_AT
+            , UPDATE_AT
+        ) VALUES (
+            #{id}
+            , #{vanityUrl}
+            , #{steamId}
+            , NOW()
+            , NOW()
+        )
+    </insert>
+
+    <select id="countByVanityUrl" parameterType="java.lang.String" resultType="Long">
+        SELECT
+            COUNT(*)
+        FROM
+            STEAM_USER
+        <where>
+            VANITY_URL = #{vanityUrl}
+        </where>
+    </select>
+
+</mapper>
