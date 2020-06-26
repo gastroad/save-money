@@ -82,7 +82,7 @@ public class SteamUserController {
                 .steamId(resolveVanityUrlDto.getSteamid())
                 .build();
 
-        // TODO: DB 저장 로직
+        // 등록에 실패한 경우
         if (steamUserService.registry(steamUserEntity) == null) {
             response.put("success", false);
             response.put("message", "등록에 실패하였습니다");
