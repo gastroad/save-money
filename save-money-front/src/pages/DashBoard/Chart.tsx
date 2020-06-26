@@ -14,7 +14,7 @@ const Chart = () => {
       .attr("y", (d, index) =>
         data.slice(0, index).reduce((sum, datum) => sum + datum * 10 + 10, 0)
       )
-      .style("fill", "red")
+      .style("fill", "blue")
       .style("width", (d) => `${d * 10}px`)
       .style("height", (d) => `${d * 10}px`)
       .text((d) => d);
