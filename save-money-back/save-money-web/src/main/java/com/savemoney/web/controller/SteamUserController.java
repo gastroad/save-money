@@ -5,14 +5,11 @@ import com.savemoney.steam.domain.ResolveVanityUrlDto;
 import com.savemoney.steam.domain.ResolveVanityUrlReqDto;
 import com.savemoney.steam.service.SteamUserService;
 import com.savemoney.web.config.security.service.JwtTokenProvider;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +51,7 @@ public class SteamUserController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        // TODO: 이미 DB에 저장 유무 -> 테스트
+        // DB에 저장 유무 확인
         if (steamUserService.isSaveSteamUser(resolveVanityUrlReqDto.getVanityUrl())) {
             response.put("success", false);
             response.put("message", "이미 등록 되었습니다");
