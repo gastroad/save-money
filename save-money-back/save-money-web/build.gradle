@@ -1,5 +1,5 @@
 group = 'com.savemoney.web'
-version = 'v0.0.1-alpha'
+version = 'v0.0.2-alpha'
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
