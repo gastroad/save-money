@@ -12,7 +12,6 @@ import GameList from "./pages/GameList";
 import Setting from "./pages/Setting";
 
 const App = () => {
-
   const renderRoute = (Component: React.FC) => {
     return (props: any) => {
       const newProps = {
@@ -21,7 +20,7 @@ const App = () => {
       return <Component {...newProps} />;
     };
   };
-  
+
   return (
     <Router>
       <Header />
