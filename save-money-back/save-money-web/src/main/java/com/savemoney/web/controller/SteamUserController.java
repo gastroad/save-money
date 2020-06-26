@@ -6,6 +6,7 @@ import com.savemoney.steam.domain.ResolveVanityUrlReqDto;
 import com.savemoney.steam.service.SteamUserService;
 import com.savemoney.web.config.security.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/steam/id")
+@RequestMapping("/api/steam/user")
 public class SteamUserController {
 
     /**
@@ -33,66 +34,33 @@ public class SteamUserController {
     private final SteamUserService steamUserService;
 
     /**
-     * steamid(64 bit) 얻기
-     * @param request                   요청 객체
-     * @param resolveVanityUrlReqDto    사용자 지정 URL 객체
-     * @param errors                    에러 객체
-     * @return                          steamid(64 bit)
+     * Steam 사용자 정보 조회
+     * @param httpServletRequest    요청 객체
+     * @return                      Steam 사용자 정보
      */
-    @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity getSteamId(HttpServletRequest request,
-                                     @Valid ResolveVanityUrlReqDto resolveVanityUrlReqDto, Errors errors) {
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ResponseEntity getSteamUserInfo(HttpServletRequest httpServletRequest) {
         Map<String, Object> response = new HashMap<>();
 
-        // 유효성 확인
-        if (errors.hasErrors()) {
+        // 요청 객체에서 Token 받아오기
+        String xAuthToken = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        if (xAuthToken == null) {
             response.put("success", false);
-            response.put("message", errors.getFieldError().getDefaultMessage());
-            return ResponseEntity.badRequest().body(response);
+            response.put("message", "정상적인 접근이 아닙니다");
+            return ResponseEntity.status(HttpStatus.INSUFFICIENT_STORAGE).body(response);
         }
 
-        // DB에 저장 유무 확인
-        if (steamUserService.isSaveSteamUser(resolveVanityUrlReqDto.getVanityUrl())) {
+        // SteamId 조회
+        String steamId = steamUserService.getSteamIdById(jwtTokenProvider.getUserPk(xAuthToken));
+        if (steamId == null) {
             response.put("success", false);
-            response.put("message", "이미 등록 되었습니다");
-            return ResponseEntity.badRequest().body(response);
+            response.put("message", "Steam 계정과 연동이 되어 있지 않습니다");
+            return ResponseEntity.status(HttpStatus.INSUFFICIENT_STORAGE).body(response);
         }
 
-        // Get steamid
-        ResolveVanityUrlDto resolveVanityUrlDto = steamUserService.getSteamId(resolveVanityUrlReqDto.getVanityUrl());
-        if (resolveVanityUrlDto == null) {
-            // null
-            response.put("success", false);
-            response.put("message", "Steam Web API 호출 중, 문제가 발생하였습니다");
-            return ResponseEntity.badRequest().body(response);
-        } else if (resolveVanityUrlDto.getSuccess() == 42) {
-            // No Match
-            response.put("success", false);
-            response.put("message", "URL이 존재하지 하지 않습니다");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        // Token에서 사용자 구별 정보(아이디) 추출
-        String id = jwtTokenProvider.getUserPk(request.getHeader("X-AUTH-TOKEN"));
-
-        // 등록 데이터 생성
-        SteamUserEntity steamUserEntity = SteamUserEntity.builder()
-                .id(id)
-                .vanityUrl(resolveVanityUrlReqDto.getVanityUrl())
-                .steamId(resolveVanityUrlDto.getSteamid())
-                .build();
-
-        // 등록에 실패한 경우
-        if (steamUserService.registry(steamUserEntity) == null) {
-            response.put("success", false);
-            response.put("message", "등록에 실패하였습니다");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        // 조회 성공
+        // Steam User 정보 조회
         response.put("success", true);
-        response.put("meassage", "등록에 성공하였습니다");
-        response.put("data", resolveVanityUrlDto.getSteamid());
+        response.put("data", steamUserService.getPlayerSummaries(steamId));
 
         return ResponseEntity.ok().body(response);
     }

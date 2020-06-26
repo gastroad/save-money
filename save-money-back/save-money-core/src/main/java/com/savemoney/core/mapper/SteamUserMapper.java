@@ -15,6 +15,13 @@ public interface SteamUserMapper {
     public Long countByVanityUrl(@Param("vanityUrl") String vanityUrl);
 
     /**
+     * SteamId(64 bit) 조회
+     * @param id    사용자 구별 정보(아이디)
+     * @return      steamid(64 bit)
+     */
+    public String findById(@Param("id") String id);
+
+    /**
      * Steam 계정 저장
      * @param steamUserEntity   Steam 사용자 정보
      * @return                  STEAM_USER_ID
