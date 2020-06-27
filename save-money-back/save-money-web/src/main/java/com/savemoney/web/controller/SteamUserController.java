@@ -1,20 +1,15 @@
 package com.savemoney.web.controller;
 
-import com.savemoney.core.domain.SteamUserEntity;
-import com.savemoney.steam.domain.ResolveVanityUrlDto;
-import com.savemoney.steam.domain.ResolveVanityUrlReqDto;
 import com.savemoney.steam.service.SteamUserService;
 import com.savemoney.web.config.security.service.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
 
