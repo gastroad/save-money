@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.*;
 
@@ -24,24 +25,21 @@ public class UserEntity extends TimeEntity {
     /**
      * 회원 암호
      */
-    @NotNull(message = "비밀번호를 입력해주세요")
-    @Size(min = 8, max = 64, message = "비밀번호는 8 ~ 64자리로 입력해주세요")
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$",
-             message = "비밀번호는 최소 8자리, 문자, 특수문자1개 이상 포함하여 입력해주세요")
+    @NotBlank(message = "비밀번호를 입력해주세요")
+    @Size(max = 256, message = "비밀번호는 256자 이내로 입력해주세요")
     private String password;
 
     /**
      * 회원 이름
      */
-    @NotNull(message = "이름을 입력해주세요")
-    @Size(min = 1, max = 64, message = "이름은 1 ~ 64자리로 입력해주세요")
+    @NotBlank(message = "이름을 입력해주세요")
+    @Size(max = 64, message = "이름은 64자 이내로 입력해주세요")
     private String name;
 
     /**
      * 회원 이메일
      */
-    @NotNull(message = "이메일을 입력해주세요")
-    @Size(min = 3, max = 256, message = "이메일은 3 ~ 256자리로 입력해주세요")
+    @NotBlank(message = "이메일을 입력해주세요")
     @Pattern(regexp = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$",
              message = "이메일 형식에 맞게 입력해주세요")
     private String email;

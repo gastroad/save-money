@@ -2,6 +2,7 @@ package com.savemoney.web.controller;
 
 import com.savemoney.core.domain.UserEntity;
 import com.savemoney.core.service.UserService;
+import com.savemoney.core.util.cryption.Base64;
 import com.savemoney.core.util.validation.ValidationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
