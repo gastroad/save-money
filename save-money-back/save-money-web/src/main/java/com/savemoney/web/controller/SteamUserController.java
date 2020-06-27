@@ -60,7 +60,7 @@ public class SteamUserController {
 
         // Steam User 정보 조회
         response.put("success", true);
-        response.put("data", steamUserService.getPlayerSummaries(steamId));
+        response.put("player", steamUserService.getPlayerSummaries(steamId));
 
         return ResponseEntity.ok().body(response);
     }

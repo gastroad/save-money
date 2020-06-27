@@ -92,7 +92,7 @@ public class SteamAccountController {
         // 조회 성공
         response.put("success", true);
         response.put("meassage", "등록에 성공하였습니다");
-        response.put("data", resolveVanityUrlDto.getSteamid());
+        response.put("steamid", resolveVanityUrlDto.getSteamid());
 
         return ResponseEntity.ok().body(response);
     }
