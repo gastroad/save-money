@@ -2,6 +2,7 @@ package com.savemoney.steam.service;
 
 import com.savemoney.core.domain.SteamUserEntity;
 import com.savemoney.core.mapper.SteamUserMapper;
+import com.savemoney.steam.domain.OwnedGameDto;
 import com.savemoney.steam.domain.PlayerSummariesDto;
 import com.savemoney.steam.domain.ResolveVanityUrlDto;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,11 @@ import org.json.simple.parser.JSONParser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -115,12 +121,44 @@ public class SteamUserService extends SteamBaseService {
                         .message((String) data.get("message"))
                         .steamid((String) data.get("steamid"))
                         .build();
-
             }
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 소유 게임 목록 얻기
+     * @param steamId   steamid(64 bit)
+     * @return          소유 게임 목록
+     */
+    public ArrayList<OwnedGameDto> getOwnedGames(String steamId) {
+        String url = "/IPlayerService/GetOwnedGames/v0001/";
+
+        // 요청 URL 생성
+        String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl + url)
+                .queryParam("key", steamApiKey)
+                .queryParam("include_appinfo", "true")
+                .queryParam("steamid", steamId)
+                .queryParam("include_played_free_games", "true")
+                .queryParam("format", "")
+                .queryParam("appids_filter", "")
+                .build()
+                .toString();
+
+        // 요청
+        RestTemplate restTemplate = new RestTemplate();
+        Map<String, Object> result = restTemplate.getForObject(requestUrl, Map.class);
+        Map<String, Object> response = (Map<String, Object>) result.get("response");
+
+        // 소유 게임 갯수
+        Integer gameCount = (Integer) response.get("game_count");
+
+        // 소유 게임 목록
+        ArrayList<OwnedGameDto> games = (ArrayList<OwnedGameDto>) response.get("games");
+
+        return games;
     }
 
     /**
