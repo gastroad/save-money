@@ -191,6 +191,40 @@ public class SteamUserService extends SteamBaseService {
     }
 
     /**
+     * Steam 레벨 얻기
+     * @param steamId   steamid(64 bit)
+     * @return          레벨
+     */
+    public Long getSteamLevel(String steamId) {
+        String url = "/IPlayerService/GetSteamLevel/v1/";
+
+        // 요청 URL 생성
+        String requestUrl = UriComponentsBuilder.fromHttpUrl(baseUrl + url)
+                .queryParam("key", steamApiKey)
+                .queryParam("steamid", steamId)
+                .build()
+                .toString();
+
+        // 요청
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.getForObject(requestUrl, String.class);
+
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject data = (JSONObject) jsonParser.parse(result);
+            JSONObject response = (JSONObject) data.get("response");
+
+            // Steam 레벨
+            Long playerLevel = (Long) response.get("player_level");
+
+            return playerLevel;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
      * DB 존재 유무
      * @param vanityUrl 사용자 지정 URL
      * @return          DB 존재 유무

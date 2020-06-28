@@ -76,13 +76,44 @@ public class SteamUserController {
         String steamId = steamUserService.getSteamIdById(jwtTokenProvider.getUserPk(token));
         if (steamId == null) {
             response.put("success", false);
-            response.put("message", "ERROR");
+            response.put("message", "Steam 계정과 연동이 되어 있지 않습니다");
             return ResponseEntity.badRequest().body(response);
         }
 
         // 사용자 소유 게임 목록 조회
         response.put("success", true);
         response.put("games", steamUserService.getOwnedGames(steamId));
+
+        return ResponseEntity.ok().body(response);
+    }
+
+    /**
+     * Steam 레벨 얻기
+     * @param httpServletRequest    요청 객체
+     * @return                      Steam 레벨
+     */
+    @RequestMapping(value = "/level/", method = RequestMethod.GET)
+    public ResponseEntity getSteamLevel(HttpServletRequest httpServletRequest) {
+        Map<String, Object> response = new HashMap<>();
+
+        // 요청 객체에서 Token 받아오기
+        String token = httpServletRequest.getHeader("X-AUTH-TOKEN");
+        if (token == null) {
+            response.put("success", false);
+            response.put("message", "정상적인 접근이 아닙니다");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // 사용자 steamId 조회
+        String steamId = steamUserService.getSteamIdById(jwtTokenProvider.getUserPk(token));
+        if (steamId == null) {
+            response.put("success", false);
+            response.put("message", "Steam 계정과 연동이 되어 있지 않습니다");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        response.put("success", true);
+        response.put("level", steamUserService.getSteamLevel(steamId));
 
         return ResponseEntity.ok().body(response);
     }
