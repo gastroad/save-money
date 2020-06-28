@@ -54,7 +54,7 @@ public class UserController {
         // 회원 가입
         try {
             response.put("success", true);
-            response.put("data", userService.join(userEntity));
+            response.put("id", userService.join(userEntity));
         } catch (NoSuchAlgorithmException e) {
             response.put("success", false);
             response.put("message", "암호화 에러 발생");

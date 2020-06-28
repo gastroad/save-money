@@ -28,7 +28,7 @@ public class CustomPasswordEncoder implements PasswordEncoder {
     @Override
     @SneakyThrows
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
-        return encodedPassword.equals(encode(rawPassword));
+        return encodedPassword.equals(rawPassword);
     }
 
 }

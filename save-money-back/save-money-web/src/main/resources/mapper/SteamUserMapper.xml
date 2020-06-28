@@ -18,6 +18,16 @@
         )
     </insert>
 
+    <select id="findById" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            STEAM_ID
+        FROM
+            STEAM_USER
+        <where>
+            ID = #{id}
+        </where>
+    </select>
+
     <select id="countByVanityUrl" parameterType="java.lang.String" resultType="Long">
         SELECT
             COUNT(*)

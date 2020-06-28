@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +56,9 @@ public class TokenController {
      * @return              Access Token
      */
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ResponseEntity getAccessToken(@Valid AccessEntity accessEntity, Errors errors) {
+    public ResponseEntity getAccessToken(@Valid AccessEntity accessEntity,
+                                         HttpServletResponse httpServletResponse,
+                                         Errors errors) {
         Map<String, Object> response = new HashMap<>();
 
         // 유효성 체크
@@ -88,7 +91,7 @@ public class TokenController {
 
         // Access Token 발급
         response.put("success", true);
-        response.put("data", jwtTokenProvider.createToken(accessEntity.getId(), roles));
+        httpServletResponse.addHeader("X-AUTH-TOKEN", jwtTokenProvider.createToken(accessEntity.getId(), roles));
 
         return ResponseEntity.ok().body(response);
     }
