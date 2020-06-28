@@ -10,7 +10,7 @@ public class OwnedGameDto {
     /**
      * Unique identifier for the game
      */
-    private String appId;
+    private Long appId;
 
     /**
      * The name of the game
@@ -25,7 +25,7 @@ public class OwnedGameDto {
     /**
      * The total number of minutes played "on record", since Steam began tracking total playtime in early 2009.
      */
-    private String playTimeForever;
+    private Long playTimeForever;
 
     /**
      * ese are the filenames of various images for the game.
@@ -51,6 +51,6 @@ public class OwnedGameDto {
      * For example, Robin's TF2 stats can be found at: http://steamcommunity.com/profiles/76561197960435530/stats/440.
      * You may notice that clicking this link will actually redirect to a vanity URL like /id/robinwalker/stats/TF2
      */
-    private String hasCommunityVisibleStats;
+    private Boolean hasCommunityVisibleStats;
 
 }

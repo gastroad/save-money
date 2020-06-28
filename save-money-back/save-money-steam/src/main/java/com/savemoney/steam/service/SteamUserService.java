@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.ArrayList;
-import java.util.Map;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -131,7 +131,7 @@ public class SteamUserService extends SteamBaseService {
      * @param steamId   steamid(64 bit)
      * @return          소유 게임 목록
      */
-    public ArrayList<OwnedGameDto> getOwnedGames(String steamId) {
+    public List<OwnedGameDto> getOwnedGames(String steamId) {
         String url = "/IPlayerService/GetOwnedGames/v0001/";
 
         // 요청 URL 생성
@@ -147,16 +147,47 @@ public class SteamUserService extends SteamBaseService {
 
         // 요청
         RestTemplate restTemplate = new RestTemplate();
-        Map<String, Object> result = restTemplate.getForObject(requestUrl, Map.class);
-        Map<String, Object> response = (Map<String, Object>) result.get("response");
+        String result = restTemplate.getForObject(requestUrl, String.class);
 
-        // 소유 게임 갯수
-        Integer gameCount = (Integer) response.get("game_count");
+        try {
+            JSONParser jsonParser = new JSONParser();
+            JSONObject data = (JSONObject) jsonParser.parse(result);
+            JSONObject response = (JSONObject) data.get("response");
 
-        // 소유 게임 목록
-        ArrayList<OwnedGameDto> games = (ArrayList<OwnedGameDto>) response.get("games");
+            // 소유 게임 갯수
+            Long gameCount = (Long) response.get("game_count");
 
-        return games;
+            // 소유 게임 목록
+            JSONArray games = (JSONArray) response.get("games");
+            List<OwnedGameDto> ownedGameDtoList = new ArrayList<>();
+
+            // Icon, Logo Base URL
+            String baseImgUrl = "http://media.steampowered.com/steamcommunity/public/images/apps/";
+
+            games.forEach(game -> {
+                JSONObject gameToJsonObject = (JSONObject) game;
+
+                Long appId = (Long) gameToJsonObject.get("appid");
+                String imgIconUrl = baseImgUrl + appId + "/" + gameToJsonObject.get("img_icon_url") + ".jpg";
+                String imgLogoUrl = baseImgUrl + appId + "/" + gameToJsonObject.get("img_logo_url") + ".jpg";
+
+                OwnedGameDto ownedGameDto = OwnedGameDto.builder()
+                        .appId(appId)
+                        .name((String) gameToJsonObject.get("name"))
+                        .playTime2Weeks((String) gameToJsonObject.get("playtime_2weeks"))
+                        .playTimeForever((Long) gameToJsonObject.get("playtime_forever"))
+                        .imgIconUrl(imgIconUrl)
+                        .imgLogoUrl(imgLogoUrl)
+                        .hasCommunityVisibleStats((Boolean) gameToJsonObject.get("has_community_visible_stats"))
+                        .build();
+                ownedGameDtoList.add(ownedGameDto);
+            });
+
+            return ownedGameDtoList;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
