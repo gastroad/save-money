@@ -4,6 +4,7 @@ import Chart from "./Chart";
 import { API } from "@components/axios";
 
 const DashBoard: React.FC = (props) => {
+  React.useEffect(() => {}, []);
   return (
     <section>
       <h2>DashBoard</h2>
