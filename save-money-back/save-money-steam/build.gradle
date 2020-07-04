@@ -1,5 +1,5 @@
 group = 'com.savemoney.steam'
-version = 'v0.0.2-alpha'
+version = 'v0.0.3-alpha'
 
 bootJar {
     enabled = false
