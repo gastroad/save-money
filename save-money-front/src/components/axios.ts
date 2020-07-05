@@ -5,7 +5,7 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((requestConfig) => {
-    const XAuthToken = localStorage.getItem("XAuthToken");
+    const XAuthToken = sessionStorage.getItem("XAuthToken");
     requestConfig.headers["X-Auth-Token"] = XAuthToken;
   return requestConfig;
 });
@@ -14,7 +14,7 @@ API.interceptors.response.use(
   (response) => {
     const authorization = response.headers["x-auth-token"];
     if (authorization) {
-      localStorage.setItem("XAuthToken", authorization);
+      sessionStorage.setItem("XAuthToken", authorization);
     }
     return response;
   },

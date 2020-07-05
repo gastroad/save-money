@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import "../assets/css/default.scss";
 import { RecoilRoot } from "recoil";
 
-if (localStorage.getItem("XAuthToken")) {
+if (sessionStorage.getItem("XAuthToken")) {
   ReactDOM.render(
     <RecoilRoot>
       <App />

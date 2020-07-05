@@ -20,10 +20,10 @@ const Login: React.FC = () => {
   };
 
   const submitLogin = () => {
-    API.get(
+    API.post(
       `/token/?id=${LoginData.id}&password=${sha256(btoa(LoginData.password))}`
     ).then((res) => {
-      console.log(res);
+      window.location.reload();
     });
   };
   const submitRegister = () => {
@@ -36,24 +36,41 @@ const Login: React.FC = () => {
     });
   };
   return (
-    <section>
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "#eef2f7",
+      }}
+    >
       <article>
-        <input
-          value={LoginData.id}
-          onChange={(e) => {
-            handleLoginData("id", e.target.value);
-          }}
-        />
-        <input
-          value={LoginData.password}
-          onChange={(e) => {
-            handleLoginData("password", e.target.value);
-          }}
-        />
-        <button onClick={submitLogin}>Login</button>
-        <button onClick={submitRegister}>Register</button>
+        <div>
+          <div>
+            <input
+              value={LoginData.id}
+              onChange={(e) => {
+                handleLoginData("id", e.target.value);
+              }}
+            />
+          </div>
+          <div>
+            <input
+              value={LoginData.password}
+              onChange={(e) => {
+                handleLoginData("password", e.target.value);
+              }}
+            />
+          </div>
+        </div>
+        <div>
+          <button onClick={submitLogin}>Login</button>
+          <button onClick={submitRegister}>Register</button>
+        </div>
       </article>
-    </section>
+    </div>
   );
 };
 
