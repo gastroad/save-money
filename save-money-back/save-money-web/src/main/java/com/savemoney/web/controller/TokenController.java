@@ -55,7 +55,7 @@ public class TokenController {
      * @param accessEntity  Access 객체
      * @return              Access Token
      */
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity getAccessToken(@Valid AccessEntity accessEntity,
                                          HttpServletResponse httpServletResponse,
                                          Errors errors) {
