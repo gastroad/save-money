@@ -120,10 +120,6 @@ button {
   display: inline-block;
 }
 
-#header {
-  height: 68px;
-  box-shadow: 0 0 35px 0 rgba(154, 161, 171, 0.15);
-}
 nav {
   position: fixed;
   left: 0px;
@@ -147,7 +143,7 @@ nav {
         height: 40px;
         line-height: 40px;
         padding: 0px 20px;
-        font-size: .89rem;
+        font-size: 0.89rem;
         letter-spacing: -1px;
         font-weight: 700;
         color: #8391a2;
@@ -163,7 +159,10 @@ section {
   padding-left: 290px;
   padding-bottom: 50px;
   background-color: #eef2f7;
-  height: 100%;
+  position: relative;
+  box-sizing: border-box;
+  min-width: 1000px;
+  min-height: 100%;
 }
 h2 {
   font-size: 18px;

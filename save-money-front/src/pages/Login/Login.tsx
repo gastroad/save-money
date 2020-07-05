@@ -83,6 +83,11 @@ const Login: React.FC = () => {
                     handleLoginData("id", e.target.value);
                   }}
                   value={LoginData.id}
+                  onKeyDown={(e) => {
+                    if (e.key == "Enter") {
+                      submitLogin();
+                    }
+                  }}
                 />
               </div>
               <div>
@@ -94,6 +99,11 @@ const Login: React.FC = () => {
                   }}
                   value={LoginData.password}
                   type={"password"}
+                  onKeyDown={(e) => {
+                    if (e.key == "Enter") {
+                      submitLogin();
+                    }
+                  }}
                 />
               </div>
             </div>

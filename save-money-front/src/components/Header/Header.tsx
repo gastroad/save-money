@@ -8,8 +8,12 @@ const Header: React.FunctionComponent = () => {
   const location = useLocation();
 
   return (
-    <header>
-      <div id="header"></div>
+    <header
+      style={{
+        position: "fixed",
+        zIndex: 1,
+      }}
+    >
       <nav>
         <h1>SAVE - MONEY</h1>
         <ul>
