@@ -6,13 +6,15 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class SteamGameService extends SteamBaseService {
 
-    public JSONArray getGlobalAchievementPercentagesForApp(String gameId) throws ParseException, HttpServerErrorException {
+    public JSONArray getGlobalAchievementPercentagesForApp(String gameId)
+            throws ParseException, HttpServerErrorException, ResourceAccessException {
         String url = "/ISteamUserStats/GetGlobalAchievementPercentagesForApp/v0002/";
 
         // 요청 URL 생성
