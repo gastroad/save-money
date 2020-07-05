@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -58,6 +59,11 @@ public class SteamGameController {
             e.printStackTrace();
             response.put("success", false);
             response.put("message", "API 요청중 문제가 발생하였습니다");
+            return ResponseEntity.status(HttpStatus.INSUFFICIENT_STORAGE).body(response);
+        } catch (ResourceAccessException e) {
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "API와 연결이 되지 않습니다");
             return ResponseEntity.status(HttpStatus.INSUFFICIENT_STORAGE).body(response);
         }
 
