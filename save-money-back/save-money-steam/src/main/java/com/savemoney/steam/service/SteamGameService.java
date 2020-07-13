@@ -31,6 +31,8 @@ public class SteamGameService extends SteamBaseService {
         JSONObject data = (JSONObject) jsonParser.parse(result);
         JSONObject achievementPercentAges = (JSONObject) data.get("achievementpercentages");
         JSONArray achievements = (JSONArray) achievementPercentAges.get("achievements");
+        
+        // TODO: DB 저장 로직 작성
 
         return achievements;
     }

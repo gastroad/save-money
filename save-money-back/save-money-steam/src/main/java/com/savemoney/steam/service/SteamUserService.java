@@ -4,7 +4,6 @@ import com.savemoney.core.domain.SteamUserEntity;
 import com.savemoney.core.mapper.SteamUserMapper;
 import com.savemoney.steam.domain.OwnedGameDto;
 import com.savemoney.steam.domain.PlayerSummariesDto;
-import com.savemoney.steam.domain.ResolveVanityUrlDto;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -56,6 +55,7 @@ public class SteamUserService extends SteamBaseService {
             if (data == null) {
                 return null;
             } else {
+                // TODO: DB 저장 로직 작성
                 return PlayerSummariesDto.builder()
                         .steamId((String) data.get("steamid"))
                         .personaName((String) data.get("personaname"))
@@ -78,46 +78,6 @@ public class SteamUserService extends SteamBaseService {
                         .locCountryCode((String) data.get("loccountrycode"))
                         .locStateCode((String) data.get("locstatecode"))
                         .locCityId((Long) data.get("loccityid"))
-                        .build();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * steamid(64 bit) 얻기
-     * @param vanityUrl 사용자 지정 URL
-     * @return          steamid (64 bit)
-     */
-    public ResolveVanityUrlDto getSteamId(String vanityUrl) {
-        String url = "/ISteamUser/ResolveVanityURL/v0001/";
-
-        // 요청 URL 생성
-        String requestURL = UriComponentsBuilder.fromHttpUrl(baseUrl + url)
-                .queryParam("key", steamApiKey)
-                .queryParam("vanityurl", vanityUrl)
-                .build()
-                .toString();
-
-        // 요청
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(requestURL, String.class);
-
-        try {
-            // 응답 데이터 JSON 객체로 변환
-            JSONParser jsonParser = new JSONParser();
-            JSONObject originalData = (JSONObject) jsonParser.parse(response);
-            JSONObject data = (JSONObject) originalData.get("response");
-
-            if (data == null) {
-                return null;
-            } else {
-                return ResolveVanityUrlDto.builder()
-                        .success((Long) data.get("success"))
-                        .message((String) data.get("message"))
-                        .steamid((String) data.get("steamid"))
                         .build();
             }
         } catch (Exception e) {
@@ -157,6 +117,8 @@ public class SteamUserService extends SteamBaseService {
             // 소유 게임 갯수
             Long gameCount = (Long) response.get("game_count");
 
+            // TODO: DB 저장 로직 작성
+
             // 소유 게임 목록
             JSONArray games = (JSONArray) response.get("games");
             List<OwnedGameDto> ownedGameDtoList = new ArrayList<>();
@@ -182,6 +144,8 @@ public class SteamUserService extends SteamBaseService {
                         .build();
                 ownedGameDtoList.add(ownedGameDto);
             });
+
+            // TODO: DB 저장 로직 작성
 
             return ownedGameDtoList;
         } catch (Exception e) {
@@ -217,23 +181,12 @@ public class SteamUserService extends SteamBaseService {
             // Steam 레벨
             Long playerLevel = (Long) response.get("player_level");
 
+            // TODO: DB 저장 로직 작성
+
             return playerLevel;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-    }
-
-    /**
-     * DB 존재 유무
-     * @param vanityUrl 사용자 지정 URL
-     * @return          DB 존재 유무
-     */
-    public Boolean isSaveSteamUser(String vanityUrl) {
-        if (steamUserMapper.countByVanityUrl(vanityUrl) < 1) {
-            return false;
-        } else {
-            return true;
         }
     }
 
@@ -246,13 +199,6 @@ public class SteamUserService extends SteamBaseService {
         return steamUserMapper.findById(id);
     }
 
-    /**
-     * Steam 계정 저장
-     * @param steamUserEntity   Steam 계정 정보
-     * @return                  STEAM_USER_ID
-     */
-    public Long registry(SteamUserEntity steamUserEntity) {
-        return steamUserMapper.save(steamUserEntity);
-    }
+
 
 }
